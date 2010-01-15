@@ -1,5 +1,3 @@
 *.wav
-blip_buf
-blip_buf*
 *.so
 *.txt
