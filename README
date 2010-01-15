@@ -1,0 +1,58 @@
+*blip_buf_ruby*
+
+This is an FFI extension for the Blip_Buf library which can be found here:
+http://code.google.com/p/blip-buf/
+
+
+%Setup:
+-------
+
+  To get yourself up and running you will need a few things:
+
+required:
+-(ffi) Can be easily installed as a gem.
+-A Blip_Buf library file which will look something like "libbb.*" (.so,.dll,...)
+
+optional:
+-(gosu) The demo_gosu.rb example in the test dir requires gosu to be installed.  Gosu can be installed as a gem.
+-(rubyzip) For rake to be able to install goodies.  It can be installed as a gem.
+-(rake) With which one can build all the demos.  Without it you will have to change the
+require paths in some of the ruby classes.
+
+  The easiest route if you are running on linux, mac, or cygwin is to use rake to install by entering "rake install" within the blip_buf_ruby root directory.  
+Rake will then attempt to download and build the Blip_Buf library.  If this does not pan out you will have to take matters into your own capable hands...
+
+
+%Fun:
+-----
+  
+  With everything in place your adventures could begin with: "rake demo" which will run a demo that generates
+a square wave and saves it as a wav file in the same directory.  All other demos can be run in a similiar
+manner: 
+-demo_fixed
+-demo_chip
+-demo_gosu.  
+
+Each of the remaining demos also create a wav file except for the gosu demo which will start up a GUI and 
+let you make some noise by left clicking and dragging your mouse within the gosu window!
+
+
+%Licensing:
+-----------
+
+-The Blip_Buf library is distributed under the LGPL.
+
+-The demo_log.txt file found in the test dir is included with the Blip_Buf library and also falls
+under the LGPL.
+
+-This ruby extension is distrubuted under the MIT license.
+
+-Both license files are included.
+
+
+%Thanks:
+--------
+
+-To Blargg for creating Blip_Buf and also the more feature-rich Blip_Buffer library.
+
+-C
