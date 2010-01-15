@@ -19,9 +19,7 @@ optional:
 -(rake) With which one can build all the demos.  Without it you will have to change the
 require paths in some of the ruby classes.
 
-The easiest route if you are running on linux, mac, or cygwin is to use rake to install by entering "rake install" within the blip_buf_ruby root 
-directory.  Rake will then attempt to download and build the Blip_Buf library.  If this does not pan out you will have to take matters into your own 
-capable hands...  Starting with the rake file would probably help too.
+The easiest route if you are running on linux, mac, or cygwin is to use rake to install by entering "rake install" within the blip_buf_ruby root directory.  Rake will then attempt to download and build the Blip_Buf library.  If this does not pan out you will have to take matters into your own capable hands...  Starting with the rake file would probably help too.
 
 %Fun:
 -----
@@ -41,9 +39,6 @@ let you make some noise by left clicking and dragging your mouse within the gosu
 -----------
 
 -The Blip_Buf library is distributed under the LGPL.
-
--The demo_log.txt file found in the test dir is included with the Blip_Buf library and also falls
-under the LGPL.
 
 -This ruby extension is distrubuted under the MIT license.
 
