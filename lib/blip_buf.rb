@@ -1,6 +1,6 @@
 require 'ffi'
 
-module BlipBuf
+module BlipBufBindings
   extend FFI::Library
 
   ffi_lib "lib/libbb.so"
@@ -26,4 +26,58 @@ module BlipBuf
   attach_function :blip_samples_avail, [:pointer], :int
   attach_function :blip_read_samples, [:pointer,:pointer,:int,:int], :int
   attach_function :blip_delete, [:pointer], :void
+end
+
+#idomaticize
+class BlipBuf
+  include BlipBufBindings
+  
+  attr_reader :clock_rate,:sample_rate
+  def initialize(sample_count,clock_rate=0,sample_rate=0)
+    @b = blip_new(sample_count)
+    @clock_rate,@sample_rate = clock_rate,sample_rate
+    @time = 0
+    raise "Unable to create blip buffer (probably out of memory)" if not @b
+    blip_set_rates(@b,@clock_rate,@sample_rate)
+  end
+  def frame(clocks,time,period,&b)
+    @time = time
+    while @time < clocks
+      b.call
+      @time += period
+    end
+    blip_end_frame(@b,clocks)
+    @time
+  end
+  def clock_rate=(rate)
+    @clock_rate = rate
+    blip_set_rates(@b,@clock_rate,@sample_rate)
+  end
+  def sample_rate=(rate)
+    @sample_rate = rate
+    blip_set_rates(@b,@clock_rate,@sample_rate)
+  end
+  def available_samples(&b)
+    @a ||= FFI::MemoryPointer.new(:pointer,512)
+    @a.write_array_of_type(:short,:write_pointer,[512])
+    while blip_samples_avail(@b) > 0 do
+      count = blip_read_samples(@b,@a,512,0)
+      sample = @a
+      b.call(sample,count)
+    end
+  end
+  def add_delta(delta)
+    blip_add_delta(@b,@time,delta)
+  end
+  def cleanup!
+    blip_delete(@b)
+  end
+end
+
+module Wav
+  def self.record(sample_rate,output,&b)
+    BlipBufBindings::wave_open(sample_rate,output)
+    b.call
+    BlipBufBindings::wave_close
+  end
 end
