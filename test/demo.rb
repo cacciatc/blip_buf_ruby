@@ -7,7 +7,7 @@ class SquareWaveGenerator
   (CLOCK_RATE  = 3579545.45).freeze
   
   attr_accessor :volume,:period
-  def initialize(phase,volume)
+  def initialize(phase,volume,&go)
     #clock time of next delta and clocks between deltas
     @time,@period = 0,1
     #+1 or -1 for phase, and volume
@@ -32,10 +32,6 @@ class SquareWaveGenerator
   end
   
   def flush_samples
-    #If we only wanted 512-sample chunks, never smaller, we would
-    #do >= 512 instead of > 0. Any remaining samples would be left
-    #in buffer for next time.
-    
     @b2.available_samples do |sample,count|
       wave_write(sample,count)
     end
@@ -54,10 +50,6 @@ Wav::record(SquareWaveGenerator::SAMPLE_RATE,"out.wav") do
     #Generate 1/60 second each time through loop
     clocks = (SquareWaveGenerator::CLOCK_RATE / 60).to_i
 
-    #We could instead run however many clocks are needed to get a fixed number
-    #of samples per frame:
-    #int samples_needed = sample_rate / 60;
-    #clocks = blip_clocks_needed( blip, samples_needed );
     sq.run_wave(clocks)
 
     sq.flush_samples
@@ -69,3 +61,5 @@ Wav::record(SquareWaveGenerator::SAMPLE_RATE,"out.wav") do
 end
 
 sq.clean_up!
+
+SquareWaveGenerator.new(1,0)

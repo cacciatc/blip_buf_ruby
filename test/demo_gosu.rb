@@ -8,7 +8,7 @@ require 'lib/blip_buf'
 
 #this is the same class from the demo_fixed
 class SquareWaveGenerator
-  include BlipBuf
+  include BlipBufBindings
   (SAMPLE_RATE = 44100).freeze
   (CLOCK_RATE  = (SAMPLE_RATE*BLIP_MAX_RATIO).to_f).freeze
   
@@ -45,7 +45,7 @@ class SquareWaveGenerator
 end
 
 class FunWindow < Gosu::Window
-  include BlipBuf
+  include BlipBufBindings
   def initialize
     super(512, 512, false)
     self.caption = "Blip_Buf fun w/ gosu"

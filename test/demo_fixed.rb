@@ -2,7 +2,7 @@
 require 'lib/blip_buf'
 
 class SquareWaveGenerator
-  include BlipBuf
+  include BlipBufBindings
   (SAMPLE_RATE = 44100).freeze
   (CLOCK_RATE  = (SAMPLE_RATE*BLIP_MAX_RATIO).to_f).freeze
   
@@ -38,7 +38,7 @@ class SquareWaveGenerator
   end
 end
 
-include BlipBuf
+include BlipBufBindings
 #blip buffer
 b = blip_new(SquareWaveGenerator::SAMPLE_RATE/10)
 raise "Unable to create blip buffer (probably out of memory)" if not b

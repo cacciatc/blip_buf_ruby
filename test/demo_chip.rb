@@ -4,7 +4,7 @@ require 'lib/blip_buf'
 require 'ostruct'
 
 class NesSoundEmu
-  include BlipBuf
+  include BlipBufBindings
   (SAMPLE_RATE = 44100).freeze
   (CLOCK_RATE  = 1789772.727).freeze
   class Channel < OpenStruct
@@ -84,7 +84,7 @@ class NesSoundEmu
       else
         channel = @dmc
     end
-    channel.run(channel,time)
+    channel.run.call(channel,time)
     case address
       when 0
         channel.period = data
@@ -129,8 +129,7 @@ class NesSoundEmu
     time,channel,address,data = 0,1,2,3
     wave_open(SAMPLE_RATE,"out.wav")
     
-    file_string = File.new(fname).readlines
-    file_string.each do |line|
+    file_string = File.new(fname).readlines.each do |line|
       #break if we run out of space!
       break if wave_sample_count >= 120 * SAMPLE_RATE
       
